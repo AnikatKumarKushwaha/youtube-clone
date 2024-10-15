@@ -1,1 +1,42 @@
+# Node Modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment Variables
+.env
+
+# OS Files
 .DS_Store
+Thumbs.db
+
+# Coverage Directory for Jest/Cypress Tests
+coverage/
+
+# Build Directory
+dist/
+build/
+
+# Temporary Files
+*.tmp
+*.swp
+
+# Database Files
+*.sqlite
+*.sqlite3
+dump.sql
+
+# Debugging Logs and PIDs
+*.pid
+*.seed
+*.pid.lock
+
+# IDE/Editor Directories and Files
+.vscode/
+
+# npm or Yarn lock files if using the other package manager
+package-lock.json
+
