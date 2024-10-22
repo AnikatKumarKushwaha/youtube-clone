@@ -26,9 +26,11 @@ export const signup = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ token, message: "User registered successfully." });
+    return res
+      .status(200)
+      .json({ token, message: "User registered successfully." });
   } catch (err) {
-    res
+    return res
       .status(500)
       .json({ message: "Error registering user", error: err.message });
   }
