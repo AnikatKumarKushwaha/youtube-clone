@@ -103,7 +103,16 @@ export const deleteVideo = async (req, res) => {
       return res.status(404).json({ message: "Video not found" });
     }
 
-    await video.remove();
+    const channel = await Channel.findById(video.channelId);
+    if (channel) {
+      // Remove the video ID from the channel's videos array
+      channel.videos = channel.videos.filter((vid) => vid.toString() !== id);
+      await channel.save();
+    }
+
+    // Use findByIdAndDelete to delete the video
+    await Video.findByIdAndDelete(id);
+
     res.status(200).json({ message: "Video deleted successfully" });
   } catch (err) {
     res
