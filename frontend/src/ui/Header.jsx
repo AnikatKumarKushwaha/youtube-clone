@@ -3,14 +3,17 @@ import { FaYoutube } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import Search from "./Search";
 
-export default function Header() {
+export default function Header({ handelSidebar }) {
   return (
     <header className=" flex justify-between px-5 h-[4rem] items-center">
       {/* *** hamburger and icon *** */}
 
       <div className="flex justify-center items-center gap-2 ">
         {/* hamburger */}
-        <button className="hover:bg-stone-200 p-2 rounded-full">
+        <button
+          className="hover:bg-stone-200 p-2 rounded-full"
+          onClick={handelSidebar}
+        >
           <RxHamburgerMenu className="h-5 w-5" />
         </button>
         {/* icon */}
