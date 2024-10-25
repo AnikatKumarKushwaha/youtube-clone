@@ -5,34 +5,31 @@ import Search from "./Search";
 
 export default function Header({ handleSidebar }) {
   return (
-    <header className="flex justify-between px-5 h-16 items-center bg-white shadow-md">
-      <div className="flex items-center gap-4">
-        <button
-          className="hover:bg-stone-200 p-2 rounded-full focus:outline-none"
-          onClick={handleSidebar}
-          aria-label="Toggle Sidebar"
-        >
-          <RxHamburgerMenu className="h-6 w-6" />
-        </button>
+    <header className=" flex justify-between px-5 h-[4rem] items-center">
+      {/* *** hamburger and icon *** */}
 
-        <div className="flex items-center gap-1">
+      <div className="flex justify-center items-center gap-2 ">
+        {/* hamburger */}
+        <button
+          className="hover:bg-stone-200 p-2 rounded-full"
+          onClick={handleSidebar}
+        >
+          <RxHamburgerMenu className="h-5 w-5" />
+        </button>
+        {/* icon */}
+        <div className="flex justify-center items-center gap-1">
           <FaYoutube className="text-red-500 h-8 w-8" />
-          <span className="font-bold tracking-tighter text-lg">
-            YOUTUBE <sup className="font-extralight text-sm">IN</sup>
+          <span className="font-bold tracking-tighter">
+            YOUTUBE <sup className="font-extralight">IN</sup>
           </span>
         </div>
       </div>
-
-      <div className="flex-grow max-w-xl">
+      <div>
         <Search />
       </div>
-
-      <button
-        className="px-4 py-2 flex items-center gap-2 border border-stone-300 rounded-full shadow-sm hover:shadow-md focus:outline-none"
-        aria-label="Sign In"
-      >
-        <FaRegUserCircle className="text-blue-400 h-6 w-6" />
-        <span className="text-blue-400 font-medium">Sign in</span>
+      <button className="px-2 py-1 flex justify-center items-center gap-1 border border-stone-200 rounded-full shadow-sm">
+        <FaRegUserCircle className="text-blue-400 h-5 w-5" />
+        <div className="text-blue-400">Sign in</div>
       </button>
     </header>
   );

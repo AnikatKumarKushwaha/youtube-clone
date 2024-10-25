@@ -4,6 +4,8 @@ import HomePage from "./pages/HomePage";
 import ChannelPage from "./pages/ChannelPage";
 import VideoPlayerPage from "./pages/VideoPlayerPage";
 import ErrorPage from "./pages/ErrorPage";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -27,5 +29,9 @@ export default function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <Provider store={store}>
+      <RouterProvider router={router} />;
+    </Provider>
+  );
 }
