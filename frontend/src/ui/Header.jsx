@@ -3,7 +3,7 @@ import { FaYoutube } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import Search from "./Search";
 
-export default function Header({ handleSidebar }) {
+export default function Header({ handleSidebar, setOpenModal, openModal }) {
   return (
     <header className=" flex justify-between px-5 h-[4rem] items-center">
       {/* *** hamburger and icon *** */}
@@ -27,7 +27,10 @@ export default function Header({ handleSidebar }) {
       <div>
         <Search />
       </div>
-      <button className="px-2 py-1 flex justify-center items-center gap-1 border border-stone-200 rounded-full shadow-sm">
+      <button
+        className="px-2 py-1 flex justify-center items-center gap-1 border border-stone-200 rounded-full shadow-sm"
+        onClick={() => setOpenModal(!openModal)}
+      >
         <FaRegUserCircle className="text-blue-400 h-5 w-5" />
         <div className="text-blue-400">Sign in</div>
       </button>

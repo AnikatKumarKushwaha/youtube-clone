@@ -2,8 +2,10 @@ import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import SideBar from "./SideBar";
 import { useState } from "react";
+import AuthModel from "../pages/AuthModel";
 
 export default function AppLayout() {
+  const [openModal, setOpenModal] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(true);
 
   function handleSidebar() {
@@ -12,7 +14,11 @@ export default function AppLayout() {
 
   return (
     <div className="h-screen flex flex-col">
-      <Header handleSidebar={handleSidebar} />
+      <Header
+        handleSidebar={handleSidebar}
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+      />
 
       <div className="flex flex-1">
         <div
@@ -23,6 +29,9 @@ export default function AppLayout() {
 
         {/* Main content fills the remaining space */}
         <div className="flex-1 p-4 overflow-auto">
+          {openModal && (
+            <AuthModel setOpenModal={setOpenModal} openModal={openModal} />
+          )}
           <Outlet />
         </div>
       </div>
