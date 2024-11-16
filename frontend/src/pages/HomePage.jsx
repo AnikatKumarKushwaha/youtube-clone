@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchVideos } from "../redux/slices/videoSlice";
-import AuthModel from "./AuthModel";
+
+import FilterVideo from "../features/HomePage/FilterVideo";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ export default function HomePage() {
   console.log(video, isLoading);
   return (
     <div>
+      <FilterVideo />
       <div>HomePage</div>
     </div>
   );
