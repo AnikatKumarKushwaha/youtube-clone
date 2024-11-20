@@ -28,7 +28,7 @@ export default function AppLayout() {
         </div>
 
         {/* Main content fills the remaining space */}
-        <div className="flex-1 p-4 overflow-auto">
+        <div className="flex-1 p-4 overflow-auto bg-stone-50">
           {openModal && (
             <AuthModel setOpenModal={setOpenModal} openModal={openModal} />
           )}

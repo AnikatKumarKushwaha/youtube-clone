@@ -3,15 +3,13 @@ import { useRef, useState } from "react";
 import AuthInput from "../ui/AuthInput";
 import { RxCross1 } from "react-icons/rx";
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginUser, signupUser } from "../redux/slices/authSlice";
 import { toast } from "react-toastify";
 
 export default function AuthModel({ setOpenModal, openModal }) {
   const [isRegistered, setIsRegistered] = useState(false);
-  const { token, isLoading, error, message } = useSelector(
-    (state) => state.auth
-  );
+
   const dispatch = useDispatch();
   const {
     register,
