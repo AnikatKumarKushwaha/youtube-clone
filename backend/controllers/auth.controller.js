@@ -21,9 +21,8 @@ export const signup = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign(
-      { userId: newUser._id, email: newUser.email },
-      secretKey,
-      { expiresIn: "1h" }
+      { userId: newUser._id, email: newUser.email, name: newUser.name },
+      secretKey
     );
 
     return res
@@ -46,9 +45,10 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user._id, email: user.email }, secretKey, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, name: user.name },
+      secretKey
+    );
 
     res.status(200).json({ token, message: "User Login successfully." });
   } catch (error) {
