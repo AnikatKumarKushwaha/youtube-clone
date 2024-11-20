@@ -17,20 +17,44 @@ export const createChannel = async (req, res) => {
   }
 };
 
-export const getChannelById = async (req, res) => {
-  const { id } = req.params;
+export const getChannelByChannelId = async (req, res) => {
+  const { channelId } = req.params;
+
   try {
-    const channel = await Channel.findById(id).populate(videos);
+    const channel = await Channel.findById(channelId).populate("videos");
+
     if (!channel) {
       return res
-        .status(400)
-        .json({ message: "You dont have a channel with this id" });
+        .status(404)
+        .json({ message: "Channel not found for the given ID" });
     }
+
     res.status(200).json(channel);
   } catch (err) {
     res
       .status(500)
-      .json({ message: "error fetching channel", error: err.message });
+      .json({ message: "Error fetching channel", error: err.message });
+  }
+};
+
+export const getChannelById = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Find the channel where the owner matches the userId
+    const channel = await Channel.findOne({ owner: userId }).populate("videos");
+
+    if (!channel) {
+      return res
+        .status(404)
+        .json({ message: "No channel found for the given user ID" });
+    }
+
+    res.status(200).json(channel);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error fetching channel", error: err.message });
   }
 };
 

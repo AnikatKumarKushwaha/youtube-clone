@@ -9,7 +9,7 @@ const channelSchema = new mongoose.Schema({
     unique: true,
   },
   subscribers: { type: Number, default: 0 },
-  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "videos" }],
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }], // Corrected reference
 });
 
 export const Channel = mongoose.model("Channel", channelSchema);
