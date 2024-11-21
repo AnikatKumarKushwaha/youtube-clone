@@ -13,22 +13,26 @@ export default function AppLayout() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Header */}
       <Header
         handleSidebar={handleSidebar}
         openModal={openModal}
         setOpenModal={setOpenModal}
       />
 
-      <div className="flex flex-1">
+      {/* Main layout */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
         <div
           className={`duration-300 ease-in-out ${openSidebar ? "w-52" : "w-0"}`}
         >
           <SideBar openSidebar={openSidebar} />
         </div>
 
-        {/* Main content fills the remaining space */}
-        <div className="flex-1 p-4 overflow-auto bg-stone-50">
+        {/* Main content */}
+        <div className="flex-1 p-4 overflow-y-auto bg-stone-50">
+          {/* Modal */}
           {openModal && (
             <AuthModel setOpenModal={setOpenModal} openModal={openModal} />
           )}
