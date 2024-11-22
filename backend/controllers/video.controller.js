@@ -13,6 +13,7 @@ export const createVideo = async (req, res) => {
     const newVideo = new Video({
       title,
       description,
+      category,
       videoUrl,
       thumbnailUrl,
       channelId,

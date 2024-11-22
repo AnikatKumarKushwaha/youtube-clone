@@ -2,6 +2,7 @@ import { Channel } from "../models/channel.model.js";
 
 export const createChannel = async (req, res) => {
   const { channelName, description } = req.body;
+
   const userId = req.user.userId;
 
   try {
@@ -106,5 +107,29 @@ export const deleteChannel = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error deleting channel", error: err.message });
+  }
+};
+
+export const getChannelVideos = async (req, res) => {
+  const { channelId } = req.params; // Assuming channelId is passed as a URL parameter
+
+  try {
+    // Find the channel and populate the videos field with their full details
+    const channel = await Channel.findById(channelId).populate("videos");
+
+    if (!channel) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    // Respond with the populated videos
+    res.status(200).json({
+      message: "Videos fetched successfully",
+      videos: channel.videos,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching videos",
+      error: error.message,
+    });
   }
 };

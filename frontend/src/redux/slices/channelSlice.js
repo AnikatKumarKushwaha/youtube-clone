@@ -75,6 +75,18 @@ export const deleteChannel = createAsyncThunk(
   }
 );
 
+export const getChannelVideos = createAsyncThunk(
+  "channel/getChannelVideos",
+  async (channelId, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${API_URL}/videos/${channelId}`);
+      return response.data.videos; // Assuming the API returns a `videos` array
+    } catch (error) {
+      return rejectWithValue(error.response.data.message || error.message);
+    }
+  }
+);
+
 // Initial state
 const initialState = {
   channel: null,
@@ -157,6 +169,19 @@ const channelSlice = createSlice({
         state.channel = action.payload;
       })
       .addCase(getChannelByChannelId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //Get Channel videos
+      .addCase(getChannelVideos.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getChannelVideos.fulfilled, (state, action) => {
+        state.loading = false;
+        state.videos = action.payload; // Add videos to the state
+      })
+      .addCase(getChannelVideos.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
