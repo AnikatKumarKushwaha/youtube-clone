@@ -54,7 +54,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
     <div
       ref={modelRef}
       onClick={closeModal}
-      className="fixed inset-0 bg-black  bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
+      className="fixed inset-0 bg-black  bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-10"
     >
       {!isRegistered ? (
         <div className="bg-stone-50 w-[30rem] rounded-sm px-10 py-5 relative ">

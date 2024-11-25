@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { createVideo } from "../../redux/slices/videoSlice";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { getChannelVideos } from "../../redux/slices/channelSlice";
 
 export default function PostVideo() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset, // Added for clearing form fields
+    reset,
   } = useForm();
 
   const dispatch = useDispatch();
@@ -22,11 +23,12 @@ export default function PostVideo() {
     const videoData = { ...data, channelId: id };
     dispatch(createVideo(videoData))
       .unwrap() // Unwrap the promise to handle success/failure directly
-      .then((response) => {
+      .then(() => {
         toast.success("Video created successfully!");
         reset(); // Clear the form fields
+        dispatch(getChannelVideos(id)); // Re-fetch videos for the channel
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Failed to create video. Please try again.");
       });
   };

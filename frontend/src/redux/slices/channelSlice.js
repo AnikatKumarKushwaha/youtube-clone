@@ -24,11 +24,17 @@ export const createChannel = createAsyncThunk(
 export const getChannelById = createAsyncThunk(
   "channel/getChannelById",
   async (id, { rejectWithValue }) => {
+    console.log("Fetching channel by user ID:", id);
     try {
       const response = await axios.get(`${API_URL}/user/${id}`);
+      console.log("Channel fetched successfully:", response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message || error.message);
+      console.error(
+        "Error fetching channel:",
+        error.response?.data || error.message
+      );
+      return rejectWithValue(error.response?.data.message || error.message);
     }
   }
 );
@@ -80,7 +86,8 @@ export const getChannelVideos = createAsyncThunk(
   async (channelId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/videos/${channelId}`);
-      return response.data.videos; // Assuming the API returns a `videos` array
+
+      return response.data.videos;
     } catch (error) {
       return rejectWithValue(error.response.data.message || error.message);
     }
@@ -90,6 +97,8 @@ export const getChannelVideos = createAsyncThunk(
 // Initial state
 const initialState = {
   channel: null,
+  videos: [],
+  videosLoaded: false,
   loading: false,
   error: null,
 };
@@ -101,8 +110,14 @@ const channelSlice = createSlice({
   reducers: {
     resetChannelState: (state) => {
       state.channel = null;
+      state.videos = [];
+      state.videosLoaded = false;
       state.loading = false;
       state.error = null;
+    },
+    resetVideos(state) {
+      state.videos = [];
+      state.videosLoaded = false; // Reset the flag
     },
   },
   extraReducers: (builder) => {
@@ -179,11 +194,13 @@ const channelSlice = createSlice({
       })
       .addCase(getChannelVideos.fulfilled, (state, action) => {
         state.loading = false;
-        state.videos = action.payload; // Add videos to the state
+        state.videos = action.payload;
+        state.videosLoaded = true; // Mark videos as loaded
       })
       .addCase(getChannelVideos.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.videosLoaded = true;
       });
   },
 });

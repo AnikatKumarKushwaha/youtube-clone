@@ -3,7 +3,7 @@ import { FaYoutube } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
 import Search from "./Search";
 import { useSelector } from "react-redux";
-import { jwtDecode } from "jwt-decode"; // No need for curly braces
+import { jwtDecode } from "jwt-decode";
 import ProfilePopup from "./ProfilePopup";
 import { useState, useEffect, useRef } from "react";
 
@@ -93,6 +93,7 @@ export default function Header({ handleSidebar, setOpenModal, openModal }) {
               <ProfilePopup
                 name={userDetails.name}
                 userId={userDetails.userId}
+                setOpenProfile={setOpenProfile}
               />
             </div>
           )}

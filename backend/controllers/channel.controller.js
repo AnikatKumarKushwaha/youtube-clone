@@ -111,10 +111,9 @@ export const deleteChannel = async (req, res) => {
 };
 
 export const getChannelVideos = async (req, res) => {
-  const { channelId } = req.params; // Assuming channelId is passed as a URL parameter
+  const { channelId } = req.params;
 
   try {
-    // Find the channel and populate the videos field with their full details
     const channel = await Channel.findById(channelId).populate("videos");
 
     if (!channel) {

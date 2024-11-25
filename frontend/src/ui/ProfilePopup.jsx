@@ -6,16 +6,34 @@ import ProfileNavButton from "./ProfileNavButton";
 import { useState, useEffect } from "react";
 import CreateChannelModal from "../pages/CreateChannelModal";
 import { useSelector, useDispatch } from "react-redux";
-import { getChannelById } from "../redux/slices/channelSlice";
+import {
+  getChannelById,
+  resetChannelState,
+} from "../redux/slices/channelSlice";
 import { useNavigate } from "react-router-dom";
+import ConfirmSignOutModal from "./ConfirmSignOutModal";
+import { logout } from "../redux/slices/authSlice";
 
-export default function ProfilePopup({ name, userId }) {
+export default function ProfilePopup({ name, userId, setOpenProfile }) {
   const [openModal, setOpenModal] = useState(false);
+  const [showSignOutModal, setShowSignOutModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Access channel data and loading state from Redux store
-  const { channel, loading } = useSelector((state) => state.channel);
+  const { channel, loading, error } = useSelector((state) => state.channel);
+
+  console.log({ channel, loading, error });
+
+  function handleSignOutModal() {
+    setShowSignOutModal(!showSignOutModal);
+  }
+
+  function handleSignOut() {
+    dispatch(logout()); // Dispatch logout action
+    dispatch(resetChannelState());
+    setShowSignOutModal(false); // Close modal
+    navigate("/");
+  }
 
   // Toggle Modal
   function handelModal() {
@@ -24,10 +42,10 @@ export default function ProfilePopup({ name, userId }) {
 
   // Navigate to channel page
   function viewChannel() {
-    navigate(`/channel/${channel._id}`); // Adjust route as per your application
+    setOpenProfile(false);
+    navigate(`/channel/${channel._id}`);
   }
 
-  // Fetch channel on component mount if userId is available
   useEffect(() => {
     if (userId) {
       dispatch(getChannelById(userId));
@@ -35,7 +53,7 @@ export default function ProfilePopup({ name, userId }) {
   }, [userId, dispatch]);
 
   return (
-    <div className="bg-white shadow-sm w-72 absolute right-11 rounded-lg text-stone-700">
+    <div className="bg-white shadow-sm w-72 absolute right-11 rounded-lg text-stone-700 z-10">
       <div className="flex gap-4 px-3 py-2">
         <div className="w-10 h-10 rounded-full bg-stone-200 flex justify-center items-center">
           {name[0].toUpperCase()}
@@ -79,9 +97,20 @@ export default function ProfilePopup({ name, userId }) {
           />
         </div>
         <div>
-          <ProfileNavButton Icon={FaSignOutAlt} text="SignOut" />
+          <ProfileNavButton
+            Icon={FaSignOutAlt}
+            text="SignOut"
+            onClick={handleSignOutModal}
+          />
         </div>
       </div>
+      {/* Sign-Out Confirmation Modal */}
+      {showSignOutModal && (
+        <ConfirmSignOutModal
+          onClose={handleSignOutModal}
+          onConfirm={handleSignOut}
+        />
+      )}
     </div>
   );
 }

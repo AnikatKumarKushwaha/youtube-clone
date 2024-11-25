@@ -23,11 +23,13 @@ export const fetchVideoById = createAsyncThunk(
 // Create a new video
 export const createVideo = createAsyncThunk(
   "videos/createVideo",
-  async (videoData, { rejectWithValue }) => {
+  async (videoData, { rejectWithValue, dispatch }) => {
     try {
       const response = await axios.post(`${API_BASE_URL}`, videoData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+      // Trigger fetching all videos to update the list
+      dispatch(fetchVideos());
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -50,14 +52,17 @@ export const updateVideo = createAsyncThunk(
   }
 );
 
+// Delete a video
 export const deleteVideo = createAsyncThunk(
   "videos/deleteVideo",
-  async (id, { rejectWithValue }) => {
+  async (id, { rejectWithValue, dispatch }) => {
     try {
       await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      return { id }; // Return the deleted video ID
+      // Trigger fetching all videos to update the list
+      dispatch(fetchVideos());
+      return { id };
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -96,11 +101,12 @@ export const fetchComments = createAsyncThunk(
 const videoSlice = createSlice({
   name: "videos",
   initialState: {
-    videos: [], // List of videos
-    currentVideo: null, // Details of a specific video
-    comments: {}, // Comments for videos (by video ID)
-    isLoading: false, // Loading state
-    error: null, // Error state
+    videos: [],
+    currentVideo: null,
+    comments: {},
+    isLoading: false,
+    error: null,
+    successMessage: null,
   },
   extraReducers: (builder) => {
     // Fetch all videos
@@ -135,7 +141,7 @@ const videoSlice = createSlice({
     });
     builder.addCase(createVideo.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.videos.push(action.payload.video); // Add new video to the list
+      state.successMessage = "Video created successfully!";
     });
     builder.addCase(createVideo.rejected, (state, action) => {
       state.isLoading = false;
@@ -148,10 +154,12 @@ const videoSlice = createSlice({
     });
     builder.addCase(updateVideo.fulfilled, (state, action) => {
       state.isLoading = false;
-      const updatedVideo = action.payload.video;
-      const index = state.videos.findIndex((v) => v._id === updatedVideo._id);
+      const updatedVideo = action.payload;
+      const index = state.videos.findIndex(
+        (video) => video._id === updatedVideo._id
+      );
       if (index !== -1) {
-        state.videos[index] = updatedVideo; // Update the video in the list
+        state.videos[index] = updatedVideo; // Update the specific video
       }
     });
     builder.addCase(updateVideo.rejected, (state, action) => {
@@ -163,9 +171,8 @@ const videoSlice = createSlice({
     builder.addCase(deleteVideo.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(deleteVideo.fulfilled, (state, action) => {
+    builder.addCase(deleteVideo.fulfilled, (state) => {
       state.isLoading = false;
-      state.videos = state.videos.filter((v) => v._id !== action.payload.id);
     });
     builder.addCase(deleteVideo.rejected, (state, action) => {
       state.isLoading = false;

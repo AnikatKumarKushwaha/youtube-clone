@@ -1,6 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { createChannel } from "../redux/slices/channelSlice"; // Adjust path as needed
+import { createChannel } from "../redux/slices/channelSlice";
 import { useState } from "react";
 
 export default function CreateChannelModal({ name, handelModal }) {
@@ -11,7 +12,7 @@ export default function CreateChannelModal({ name, handelModal }) {
   } = useForm();
 
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.channel); // Select channel state
+  const { loading } = useSelector((state) => state.channel);
 
   const { token } = useSelector((state) => state.auth);
 
@@ -87,7 +88,7 @@ export default function CreateChannelModal({ name, handelModal }) {
 
           <label className="text-justify mt-5 px-52">
             By clicking Create Channel, you agree to{" "}
-            <span className="text-blue-500">YouTube's Terms of Service.</span>
+            <span className="text-blue-500">YouTubes Terms of Service.</span>
             Changes made to your name and profile picture are visible only on
             YouTube and not other Google services.{" "}
             <span className="text-blue-500">Learn more.</span>

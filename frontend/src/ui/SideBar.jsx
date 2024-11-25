@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import NavButton from "./NavButton";
 import { IoMdHome } from "react-icons/io";
 import { SiYoutubeshorts } from "react-icons/si";
@@ -11,7 +12,7 @@ export default function SideBar({ openSidebar }) {
       }`}
     >
       <ul>
-        <NavButton Icon={IoMdHome} text="Home" />
+        <NavButton Icon={IoMdHome} text="Home" path="/" />
         <NavButton Icon={SiYoutubeshorts} text="Shorts" />
         <NavButton Icon={MdSubscriptions} text="Subscriptions" />
         <hr className="m-4" />

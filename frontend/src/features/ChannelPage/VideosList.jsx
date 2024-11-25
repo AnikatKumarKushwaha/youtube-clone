@@ -1,38 +1,43 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getChannelVideos } from "../../redux/slices/channelSlice"; // Ensure the path is correct
-import { useParams } from "react-router-dom"; // Assuming you're using React Router for `channelId`
+import { getChannelVideos } from "../../redux/slices/channelSlice";
+import { useParams } from "react-router-dom";
+import VideoCard from "../../ui/VideoCard";
 
 export default function VideosList() {
   const dispatch = useDispatch();
-  const { id } = useParams(); // Extract channelId from the URL if applicable
-  const { videos, loading, error } = useSelector((state) => state.channel);
+  const { id } = useParams(); // Extract channelId from the URL
+  const { videos, loading, error, videosLoaded } = useSelector(
+    (state) => state.channel
+  );
+  console.log(videos);
 
-  // Fetch videos when the component mounts
   useEffect(() => {
-    if (id && (!videos || videos.length === 0)) {
+    // Fetch videos only if not already loaded for the current channel
+    if (id && !videosLoaded) {
       dispatch(getChannelVideos(id));
     }
-  }, [id, dispatch, videos]);
+  }, [id, dispatch, videosLoaded]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="text-center py-4">Loading...</div>;
+  if (error)
+    return <div>Error: {error.message || "Something went wrong."}</div>;
 
   return (
-    <div>
-      <h2>Channel Videos</h2>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 justify-center items-center">
       {videos?.length > 0 ? (
-        <ul>
-          {videos.map((video) => (
-            <li key={video._id}>
-              <h3>{video.title}</h3>
-              <p>{video.description}</p>
-              <img src={video.thumbnailUrl} alt={video.title} width="150" />
-            </li>
-          ))}
-        </ul>
+        videos.map((video) => (
+          <VideoCard
+            key={video._id}
+            thumbnail={video.thumbnailUrl}
+            title={video.title}
+            video={video} // Updated video prop
+          />
+        ))
       ) : (
-        <p>No videos available for this channel.</p>
+        <p className="col-span-4 text-center my-6 font-semibold uppercase text-stone-600">
+          No videos available for this channel.
+        </p>
       )}
     </div>
   );

@@ -2,7 +2,8 @@ import { Channel } from "../models/channel.model.js";
 import { Video } from "../models/video.model.js";
 
 export const createVideo = async (req, res) => {
-  const { title, description, videoUrl, thumbnailUrl, channelId } = req.body;
+  const { title, description, videoUrl, category, thumbnailUrl, channelId } =
+    req.body;
 
   try {
     const channel = await Channel.findById(channelId);
@@ -37,7 +38,9 @@ export const createVideo = async (req, res) => {
 // Fetch all videos from all channels
 export const getAllVideos = async (req, res) => {
   try {
-    const videos = await Video.find().populate("channelId", "channelName"); // Populates channel info
+    const videos = await Video.find()
+      .populate("channelId", "channelName")
+      .exec(); // Populates channel info
 
     if (!videos || videos.length === 0) {
       return res.status(404).json({ message: "No videos found" });
