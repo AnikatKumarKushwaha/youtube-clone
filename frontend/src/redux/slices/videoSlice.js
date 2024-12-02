@@ -16,6 +16,7 @@ export const fetchVideoById = createAsyncThunk(
   "videos/fetchVideoById",
   async (id) => {
     const response = await axios.get(`${API_BASE_URL}/${id}`);
+    console.log("fetch video api", response);
     return response.data;
   }
 );
@@ -72,11 +73,11 @@ export const deleteVideo = createAsyncThunk(
 // Add a comment to a video
 export const addComment = createAsyncThunk(
   "videos/addComment",
-  async ({ id, commentData }, { rejectWithValue }) => {
+  async ({ videoid, userId, text }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/${id}/comments`,
-        commentData,
+        `${API_BASE_URL}/${videoid}/comments`,
+        { text, userId },
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
@@ -94,6 +95,18 @@ export const fetchComments = createAsyncThunk(
   async (id) => {
     const response = await axios.get(`${API_BASE_URL}/${id}/comments`);
     return { id, comments: response.data };
+  }
+);
+
+export const likeVideo = createAsyncThunk(
+  "videos/likeVideo",
+  async (videoId, thunkAPI) => {
+    try {
+      const response = await axios.put(`${API_BASE_URL}/${videoId}/like`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
   }
 );
 
@@ -207,10 +220,23 @@ const videoSlice = createSlice({
       state.isLoading = false;
       state.comments[action.payload.id] = action.payload.comments;
     });
-    builder.addCase(fetchComments.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.error.message;
-    });
+    builder
+      .addCase(fetchComments.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      //like videos
+      .addCase(likeVideo.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(likeVideo.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentVideo = action.payload;
+      })
+      .addCase(likeVideo.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

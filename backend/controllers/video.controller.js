@@ -129,6 +129,7 @@ export const deleteVideo = async (req, res) => {
 export const addComment = async (req, res) => {
   const { id } = req.params; // Video ID
   const { text, userId } = req.body;
+  console.log(req.body);
 
   try {
     const video = await Video.findById(id);
@@ -153,7 +154,7 @@ export const getComments = async (req, res) => {
   try {
     const video = await Video.findById(id).populate(
       "comments.userId",
-      "username"
+      "name email"
     );
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
@@ -163,5 +164,20 @@ export const getComments = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error fetching comments", error: err.message });
+  }
+};
+
+export const likeVideos = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const video = await Video.findByIdAndUpdate(
+      id,
+      { $inc: { likes: 1 } }, // Increment the likes count by 1
+      { new: true } // Return the updated document
+    );
+    if (!video) return res.status(404).json({ message: "Video not found" });
+    res.json(video);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

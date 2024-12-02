@@ -7,6 +7,7 @@ import {
   addComment,
   getComments,
   getAllVideos,
+  likeVideos,
 } from "../controllers/video.controller.js";
 import { authenticate } from "../middleware/auth.middleware.js";
 
@@ -23,5 +24,6 @@ router.get("/:id", getVideoById);
 // Comments Management (Authenticated routes)
 router.post("/:id/comments", authenticate, addComment);
 router.get("/:id/comments", getComments);
+router.put("/:id/like", likeVideos);
 
 export default router;
