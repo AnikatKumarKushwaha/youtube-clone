@@ -36,7 +36,7 @@ export default function PostVideo() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col w-[70%] max-w-2xl bg-white shadow-lg rounded-lg ml-5 mt-10 p-6 space-y-4 border border-gray-300"
+      className="flex flex-col md:w-[70%] max-w-2xl bg-white shadow-lg rounded-lg ml-5 mt-10 p-6 space-y-4 border border-gray-300"
     >
       {/* Title */}
       <div className="flex flex-col">

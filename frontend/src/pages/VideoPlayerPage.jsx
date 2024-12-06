@@ -11,6 +11,7 @@ import {
 import { FaCheckCircle } from "react-icons/fa";
 import SuggestedVideos from "../ui/SuggestedVideos";
 import Comments from "../features/VideoPlayer/Comments";
+import LoadingSpinner from "../ui/LoadingSpinner";
 
 export default function VideoPlayerPage() {
   const dispatch = useDispatch();
@@ -35,10 +36,7 @@ export default function VideoPlayerPage() {
   }, [videoId, dispatch]);
 
   useEffect(() => {
-    console.log("currentVideo:", currentVideo);
-    console.log(currentVideo);
     if (currentVideo?.channelId) {
-      console.log("Fetching channel by ID:", currentVideo);
       dispatch(
         getChannelByChannelId(
           currentVideo.channelId._id || currentVideo.channelId
@@ -62,29 +60,41 @@ export default function VideoPlayerPage() {
   };
 
   // Handle loading state
-  if (videoLoading || channelLoading) return <div>Loading...</div>;
+  if (videoLoading || channelLoading)
+    return (
+      <div className="h-96 w-full flex justify-center items-center">
+        <LoadingSpinner />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="flex text-stone-700">
+    <div className="flex lg:flex-row flex-col text-stone-700 lg:gap-0 gap-10">
       {currentVideo ? (
-        <div className="w-[70%]">
+        <div className="lg:w-[70%]">
           <iframe
-            height="450"
             src={currentVideo.videoUrl}
             title={currentVideo.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className="block mb-[16px] w-[100%]"
+            className="block mb-[16px] w-[100%] h-[300px] sm:h-[450px]"
           ></iframe>
           <h1 className="text-lg font-semibold">{currentVideo.title}</h1>
           {/** subscribe channel section */}
-          <div className="flex items-center gap-2 justify-between">
-            <div className="flex items-center gap-2">
-              <div className="bg-stone-600 text-stone-50 text-xl w-10 h-10 flex items-center justify-center rounded-full">
-                {channel?.channelName?.[0] || "?"}
-              </div>
+          <div
+            className="flex items-center gap-2 justify-between overflow-x-auto"
+            style={{
+              msOverflowStyle: "none",
+              scrollbarWidth: "none",
+            }}
+          >
+            <div className="flex items-center gap-1 sm:gap-2">
               <div>
+                <div className="bg-stone-600 text-stone-50 text-xl w-10 h-10 flex items-center justify-center rounded-full">
+                  {channel?.channelName?.[0] || "?"}
+                </div>
+              </div>
+              <div className="flex justify-center items-center gap-1">
                 {channel?.channelName || "Unknown Channel"}{" "}
                 <FaCheckCircle className="inline-block text-sm text-stone-400 pb-[1px]" />
               </div>
@@ -123,7 +133,7 @@ export default function VideoPlayerPage() {
       ) : (
         <div>Loading video details...</div>
       )}
-      <div className="w-[30%] ml-4 flex flex-col gap-4">
+      <div className="lg:w-[30%] ml-4 flex flex-col gap-4">
         {videos?.length > 0 ? (
           videos.map((video) => (
             <SuggestedVideos video={video} key={video._id} />

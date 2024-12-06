@@ -32,7 +32,7 @@ export default function CreateChannelModal({ name, handelModal }) {
   }
 
   return (
-    <div className="fixed inset-0 z-10">
+    <div className="fixed inset-0 z-30">
       {/* Background Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
 
@@ -46,7 +46,7 @@ export default function CreateChannelModal({ name, handelModal }) {
           </div>
         </div>
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="px-52">
+          <div className="lg:px-52">
             <label className="block font-semibold mb-1">Channel Name</label>
             <input
               type="text"
@@ -66,7 +66,7 @@ export default function CreateChannelModal({ name, handelModal }) {
               </p>
             )}
           </div>
-          <div className="px-52">
+          <div className="lg:px-52">
             <label className="block font-semibold mb-1">Description</label>
             <textarea
               className="w-full rounded-md px-2 py-2 border focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -86,7 +86,7 @@ export default function CreateChannelModal({ name, handelModal }) {
             )}
           </div>
 
-          <label className="text-justify mt-5 px-52">
+          <label className="text-justify mt-5 lg:px-52 sm:text-base text-sm">
             By clicking Create Channel, you agree to{" "}
             <span className="text-blue-500">YouTubes Terms of Service.</span>
             Changes made to your name and profile picture are visible only on

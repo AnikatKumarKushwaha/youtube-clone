@@ -25,15 +25,12 @@ export default function Comments({ videoId }) {
       console.error("Invalid token:", error.message);
     }
   }
-  console.log("comments inside componet", comments);
 
   useEffect(() => {
     if (videoId && !comments[videoId]) {
       dispatch(fetchComments(videoId));
     }
   }, [dispatch, videoId, comments]);
-
-  console.log("Fetched comments:", comments[videoId]);
 
   // Handle adding a comment
   const handleAddComment = async () => {
@@ -91,10 +88,17 @@ export default function Comments({ videoId }) {
           <p>Loading comments...</p>
         ) : comments[videoId] && comments[videoId].length > 0 ? (
           comments[videoId].map((comment) => (
-            <SingleComment comment={comment} key={comment._id} />
+            <SingleComment
+              comment={comment}
+              key={comment._id}
+              videoId={videoId}
+              userId={userId}
+            />
           ))
         ) : (
-          <p>No comments yet. Be the first to comment!</p>
+          <p className=" text-center text-stone-600">
+            No comments yet. Be the first to comment!
+          </p>
         )}
       </div>
     </div>

@@ -8,6 +8,8 @@ import {
   getComments,
   getAllVideos,
   likeVideos,
+  editComment,
+  deleteComment,
 } from "../controllers/video.controller.js";
 import { authenticate } from "../middleware/auth.middleware.js";
 
@@ -25,5 +27,7 @@ router.get("/:id", getVideoById);
 router.post("/:id/comments", authenticate, addComment);
 router.get("/:id/comments", getComments);
 router.put("/:id/like", likeVideos);
+router.put("/:videoId/comments/:commentId", editComment);
+router.delete("/:videoId/comments/:commentId", deleteComment);
 
 export default router;

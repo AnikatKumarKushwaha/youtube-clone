@@ -5,7 +5,7 @@ import { FaCheckCircle } from "react-icons/fa";
 export default function VideoCardMain({ video }) {
   return (
     <Link className="w-full bg-stone-50" to={`/video/${video._id}`}>
-      <div className="h-40 w-full relative">
+      <div className="h-40 w-full relative ">
         <img
           src={video.thumbnailUrl}
           alt="videos"

@@ -25,7 +25,9 @@ export default function AppLayout() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <div
-          className={`duration-300 ease-in-out ${openSidebar ? "w-52" : "w-0"}`}
+          className={` duration-300 ease-in-out absolute lg:static z-10 lg:z-0 ${
+            openSidebar ? "w-52" : "w-0"
+          }`}
         >
           <SideBar openSidebar={openSidebar} />
         </div>

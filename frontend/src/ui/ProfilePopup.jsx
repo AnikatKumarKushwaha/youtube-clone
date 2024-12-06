@@ -13,6 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import ConfirmSignOutModal from "./ConfirmSignOutModal";
 import { logout } from "../redux/slices/authSlice";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function ProfilePopup({ name, userId, setOpenProfile }) {
   const [openModal, setOpenModal] = useState(false);
@@ -51,6 +52,13 @@ export default function ProfilePopup({ name, userId, setOpenProfile }) {
       dispatch(getChannelById(userId));
     }
   }, [userId, dispatch]);
+
+  if (loading)
+    return (
+      <div className="bg-white shadow-sm w-72 absolute right-11 rounded-lg text-stone-700 z-10 h-52 flex justify-center items-center">
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <div className="bg-white shadow-sm w-72 absolute right-11 rounded-lg text-stone-700 z-10">

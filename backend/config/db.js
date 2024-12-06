@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
 export async function connectDb() {
-  await mongoose.connect("mongodb://localhost:27017/Youtube-clone");
+  await mongoose.connect(
+    "mongodb+srv://anikat1999akas:QxDA7eHgDSZAR2yB@cluster0.xmp1r.mongodb.net/"
+  );
 
   const db = mongoose.connection;
 

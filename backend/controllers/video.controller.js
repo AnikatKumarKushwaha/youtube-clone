@@ -147,6 +147,66 @@ export const addComment = async (req, res) => {
   }
 };
 
+//edit comment
+export const editComment = async (req, res) => {
+  const { videoId, commentId } = req.params;
+  const { text } = req.body;
+
+  try {
+    const video = await Video.findById(videoId);
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    const comment = video.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    comment.text = text;
+    await video.save();
+
+    res.status(200).json({ message: "Comment updated successfully", video });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating comment", error: err.message });
+  }
+};
+
+//delete comments
+
+export const deleteComment = async (req, res) => {
+  const { videoId, commentId } = req.params;
+
+  try {
+    const video = await Video.findById(videoId);
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+
+    // Find the index of the comment to delete
+    const commentIndex = video.comments.findIndex(
+      (comment) => comment._id.toString() === commentId
+    );
+
+    if (commentIndex === -1) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    // Remove the comment from the array
+    video.comments.splice(commentIndex, 1);
+
+    await video.save(); // Save the updated video document
+
+    res.status(200).json({ message: "Comment deleted successfully", video });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error deleting comment", error: err.message });
+  }
+};
+
 // Fetch comments of a video
 export const getComments = async (req, res) => {
   const { id } = req.params; // Video ID

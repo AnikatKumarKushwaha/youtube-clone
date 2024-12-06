@@ -7,7 +7,7 @@ import { MdSubscriptions } from "react-icons/md";
 export default function SideBar({ openSidebar }) {
   return (
     <div
-      className={`bg-stone-50 flex flex-col justify-between h-[calc(100vh-4rem)] w-52 duration-200 ease-in-out   ${
+      className={`bg-stone-50 flex flex-col justify-between h-[calc(100vh-4rem)] w-52 duration-200 ease-in-out ${
         openSidebar ? "translate-x-0" : "-translate-x-full"
       }`}
     >

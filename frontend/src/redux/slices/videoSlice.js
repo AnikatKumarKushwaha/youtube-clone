@@ -16,7 +16,7 @@ export const fetchVideoById = createAsyncThunk(
   "videos/fetchVideoById",
   async (id) => {
     const response = await axios.get(`${API_BASE_URL}/${id}`);
-    console.log("fetch video api", response);
+
     return response.data;
   }
 );
@@ -109,6 +109,41 @@ export const likeVideo = createAsyncThunk(
     }
   }
 );
+//edit comments
+export const editComment = createAsyncThunk(
+  "videos/editComment",
+  async ({ videoId, commentId, text }, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${API_BASE_URL}/${videoId}/comments/${commentId}`,
+        { text },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+//delete comments
+export const deleteComment = createAsyncThunk(
+  "videos/deleteComment",
+  async ({ videoId, commentId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(
+        `${API_BASE_URL}/${videoId}/comments/${commentId}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 // Slice definition
 const videoSlice = createSlice({
@@ -152,7 +187,7 @@ const videoSlice = createSlice({
     builder.addCase(createVideo.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(createVideo.fulfilled, (state, action) => {
+    builder.addCase(createVideo.fulfilled, (state) => {
       state.isLoading = false;
       state.successMessage = "Video created successfully!";
     });
@@ -237,6 +272,53 @@ const videoSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload;
       });
+    //edit comment
+    builder.addCase(editComment.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(editComment.fulfilled, (state, action) => {
+      state.isLoading = false;
+
+      const videoId = action.payload.video._id;
+      const updatedComment = action.payload.video.comments.find(
+        (comment) => comment._id === action.meta.arg.commentId
+      );
+
+      if (updatedComment && updatedComment.userId?.name) {
+        // If the comment is found and userId is populated
+        const index = state.comments[videoId]?.findIndex(
+          (comment) => comment._id === updatedComment._id
+        );
+
+        if (index !== -1) {
+          state.comments[videoId][index] = updatedComment;
+        }
+      } else {
+        console.error("User data not populated correctly");
+      }
+    });
+    builder.addCase(editComment.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+
+    // Delete Comment
+    builder.addCase(deleteComment.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteComment.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const videoId = action.payload.video._id;
+      if (state.comments[videoId]) {
+        state.comments[videoId] = state.comments[videoId].filter(
+          (comment) => comment._id !== action.meta.arg.commentId
+        );
+      }
+    });
+    builder.addCase(deleteComment.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 
