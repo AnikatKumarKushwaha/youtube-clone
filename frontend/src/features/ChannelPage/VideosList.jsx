@@ -6,7 +6,7 @@ import VideoCard from "../../ui/VideoCard";
 
 export default function VideosList() {
   const dispatch = useDispatch();
-  const { id } = useParams(); // Extract channelId from the URL
+  const { id } = useParams();
   const { videos, loading, error, videosLoaded } = useSelector(
     (state) => state.channel
   );

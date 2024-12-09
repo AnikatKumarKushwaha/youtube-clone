@@ -14,9 +14,7 @@ export default function PostVideo() {
   } = useForm();
 
   const dispatch = useDispatch();
-  const { isLoading, error, successMessage } = useSelector(
-    (state) => state.videos
-  );
+  const { isLoading } = useSelector((state) => state.videos);
   const { id } = useParams();
 
   const onSubmit = (data) => {
@@ -127,10 +125,6 @@ export default function PostVideo() {
 
       {/* Loading and Messages */}
       {isLoading && <p className="text-sm text-blue-500">Submitting...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
-      {successMessage && (
-        <p className="text-sm text-green-500">{successMessage}</p>
-      )}
 
       {/* Submit Button */}
       <button

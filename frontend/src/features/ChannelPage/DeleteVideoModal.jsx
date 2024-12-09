@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { deleteVideo } from "../../redux/slices/videoSlice";

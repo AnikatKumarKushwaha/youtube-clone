@@ -18,6 +18,7 @@ export default function CreateChannelModal({ name, handelModal }) {
 
   const [successMessage, setSuccessMessage] = useState("");
 
+  // function to handle form submission.
   async function onSubmit(data) {
     dispatch(createChannel({ ...data, token }))
       .unwrap()
@@ -39,13 +40,15 @@ export default function CreateChannelModal({ name, handelModal }) {
       {/* Modal */}
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-8 rounded shadow-xl h-[95%] w-[95%] z-20 bg-stone-100">
         <h1 className="text-lg font-bold">How You’ll Appear</h1>
-
         <div className="flex justify-center items-center h-52 mt-10">
+          {/* Display user initials in a circular placeholder */}
           <div className="w-28 h-28 rounded-full bg-stone-300 flex justify-center items-center uppercase text-3xl font-bold">
             {name[0]}
           </div>
         </div>
+        {/* Form for channel creation */}
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          {/* Channel name input */}
           <div className="lg:px-52">
             <label className="block font-semibold mb-1">Channel Name</label>
             <input
@@ -66,6 +69,7 @@ export default function CreateChannelModal({ name, handelModal }) {
               </p>
             )}
           </div>
+          {/* Description input */}
           <div className="lg:px-52">
             <label className="block font-semibold mb-1">Description</label>
             <textarea
@@ -85,7 +89,7 @@ export default function CreateChannelModal({ name, handelModal }) {
               </p>
             )}
           </div>
-
+          {/* Terms and conditions message */}
           <label className="text-justify mt-5 lg:px-52 sm:text-base text-sm">
             By clicking Create Channel, you agree to{" "}
             <span className="text-blue-500">YouTubes Terms of Service.</span>
@@ -95,6 +99,7 @@ export default function CreateChannelModal({ name, handelModal }) {
           </label>
           {loading && <p className="text-blue-500 mt-2 px-52">Loading...</p>}
 
+          {/* Success message after successful creation */}
           {successMessage && (
             <p className="text-green-500 mt-2 px-52">{successMessage}</p>
           )}
@@ -102,6 +107,7 @@ export default function CreateChannelModal({ name, handelModal }) {
             <button type="button" className="font-bold" onClick={handelModal}>
               Cancel
             </button>
+            {/* Button to submit the form */}
             <button type="submit" className="font-bold text-blue-600">
               Create Channel
             </button>

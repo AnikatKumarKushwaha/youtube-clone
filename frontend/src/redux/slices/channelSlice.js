@@ -5,6 +5,7 @@ import axios from "axios";
 const API_URL = "http://localhost:3000/api/channel";
 
 // Thunks for async operations
+// Create a new channel
 export const createChannel = createAsyncThunk(
   "channel/createChannel",
   async ({ channelName, description, token }, { rejectWithValue }) => {
@@ -21,6 +22,7 @@ export const createChannel = createAsyncThunk(
   }
 );
 
+// Get channel by user ID
 export const getChannelById = createAsyncThunk(
   "channel/getChannelById",
   async (id, { rejectWithValue }) => {
@@ -38,6 +40,7 @@ export const getChannelById = createAsyncThunk(
     }
   }
 );
+// Get channel by channel ID
 
 export const getChannelByChannelId = createAsyncThunk(
   "channel/getChannelByChannelId",
@@ -51,6 +54,7 @@ export const getChannelByChannelId = createAsyncThunk(
   }
 );
 
+// Update channel details
 export const updateChannel = createAsyncThunk(
   "channel/updateChannel",
   async ({ id, name, description, token }, { rejectWithValue }) => {
@@ -67,6 +71,7 @@ export const updateChannel = createAsyncThunk(
   }
 );
 
+// Delete a channel
 export const deleteChannel = createAsyncThunk(
   "channel/deleteChannel",
   async ({ id, token }, { rejectWithValue }) => {
@@ -81,6 +86,7 @@ export const deleteChannel = createAsyncThunk(
   }
 );
 
+// Get videos from a channel
 export const getChannelVideos = createAsyncThunk(
   "channel/getChannelVideos",
   async (channelId, { rejectWithValue }) => {
@@ -108,6 +114,7 @@ const channelSlice = createSlice({
   name: "channel",
   initialState,
   reducers: {
+    // Reset channel state to initial values
     resetChannelState: (state) => {
       state.channel = null;
       state.videos = [];
@@ -115,6 +122,7 @@ const channelSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    // Reset videos list
     resetVideos(state) {
       state.videos = [];
       state.videosLoaded = false; // Reset the flag

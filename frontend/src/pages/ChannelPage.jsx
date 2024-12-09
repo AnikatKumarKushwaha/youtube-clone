@@ -26,6 +26,7 @@ export default function ChannelPage() {
 
   let userDetails = null;
 
+  // Decode JWT token to get user details
   if (token) {
     try {
       userDetails = jwtDecode(token);
@@ -34,23 +35,29 @@ export default function ChannelPage() {
     }
   }
 
+  // Display loading spinner if data is still loading
   if (loading)
     return (
       <div className="h-96 w-full flex justify-center items-center">
         <LoadingSpinner />
       </div>
     );
+
+  // Display error message if there's an error in fetching data
   if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
+      {/* Render channel details if available */}
       {channel ? (
         <div className="flex gap-2 sm:gap-6">
           <div>
+            {/* Display user's initials */}
             <div className="w-20 h-20 sm:w-40 sm:h-40 bg-stone-300 rounded-full flex justify-center items-center uppercase text-5xl">
               {userDetails.name[0]}
             </div>
           </div>
+          {/* Channel information and actions */}
           <div className="flex flex-col justify-between my-4">
             <div>
               <h2 className="font-bold uppercase text-base sm:text-xl text-stone-700">
@@ -65,6 +72,7 @@ export default function ChannelPage() {
             <div className="text-stone-500 text-xs sm:text-sm">
               More about this channel...more{" "}
             </div>
+            {/* Buttons for customizing and managing videos */}
             <div className="flex gap-2">
               <button
                 className="block text-xs sm:text-sm px-2 sm:px-4 py-1 sm:py-2 rounded-full bg-stone-200 hover:bg-stone-300"
@@ -79,8 +87,10 @@ export default function ChannelPage() {
           </div>
         </div>
       ) : (
+        // Display message if channel details are unavailable
         <div>No channel details available</div>
       )}
+      {/* Tabs for toggling between videos and posts */}
       <div className=" flex gap-4 ml-6 font-semibold text-stone-700 mt-5 ">
         <button
           className={`${toggle && "border-b-2 border-stone-500"} pb-2`}
@@ -97,6 +107,7 @@ export default function ChannelPage() {
       </div>
 
       <hr />
+      {/* Render either videos or posts based on toggle state */}
       {toggle ? <VideosList /> : <PostVideo />}
       {showCustomizeModal && (
         <CustomizeChannelModal

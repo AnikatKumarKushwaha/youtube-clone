@@ -54,7 +54,7 @@ export default function Search() {
         <div className=" absolute top-12 z-10 w-full bg-white border border-stone-200 shadow rounded-lg max-h-40 overflow-y-auto">
           {suggestions.map((video) => (
             <div
-              key={video._id} // Unique key for each video
+              key={video._id}
               className="px-4 py-2 hover:bg-stone-100 cursor-pointer"
               onClick={() => handleSuggestionClick(video.title, video._id)}
             >

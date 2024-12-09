@@ -4,18 +4,20 @@ import jwt from "jsonwebtoken";
 
 const secretKey = "12345678Zenkai12345678";
 
-///******Sign-up******///
+///////////////Sign-up///////////////
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
   try {
+    // Check if a user with the provided email already exists
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
+      // If the email is already used, respond with a 400 (Bad Request) status
       return res.status(400).json({ message: "Email already used" });
     }
-
+    // Hash the user's password
     const hashedPassword = await bcrypt.hash(password, 10);
-
+    // Create a new user instance
     const newUser = new User({ name, email, password: hashedPassword });
 
     await newUser.save();
@@ -35,12 +37,13 @@ export const signup = async (req, res) => {
   }
 };
 
-///*****Login*****/
+///////////////Login///////////////
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
 
+    // If the user doesn't exist or the password is incorrect
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ message: "Invalid credentials" });
     }

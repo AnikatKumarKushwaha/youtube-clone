@@ -17,7 +17,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
     formState: { errors },
     reset,
   } = useForm();
-  const modelRef = useRef();
+  const modelRef = useRef(); // Reference to the modal for handling click outside to close
 
   //form submit function
   async function onLoginFormSubmit(data) {
@@ -52,12 +52,14 @@ export default function AuthModel({ setOpenModal, openModal }) {
   }
   return (
     <div
-      ref={modelRef}
+      ref={modelRef} // Assigning reference to the modal background
       onClick={closeModal}
       className="fixed inset-0 bg-black  bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-10"
     >
+      {/* Conditional rendering for Login or Sign Up */}
       {!isRegistered ? (
         <div className="bg-stone-50 w-[30rem] rounded-sm px-10 py-5 relative ">
+          {/* Close modal button */}
           <button
             className=" absolute right-2 top-2 p-3 hover:bg-stone-200 rounded-full"
             onClick={() => setOpenModal(!openModal)}
@@ -67,12 +69,13 @@ export default function AuthModel({ setOpenModal, openModal }) {
           <div className="text-center font-bold text-stone-600 text-xl mb-10">
             {!isRegistered ? "LOGIN" : "Sign Up"}
           </div>
-          {/***** * Login Up Form ****/}
 
+          {/***** * Login Form ****/}
           <form
             className="flex flex-col gap-10"
             onSubmit={handleSubmit(onLoginFormSubmit)}
           >
+            {/* Email Input */}
             <AuthInput
               type="text"
               placeholder="enter your email"
@@ -87,6 +90,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
               }}
               error={errors.email}
             />
+            {/* Password Input */}
             <AuthInput
               type="password"
               placeholder="enter you password"
@@ -101,11 +105,12 @@ export default function AuthModel({ setOpenModal, openModal }) {
               }}
               error={errors.password}
             />
+            {/* Submit Button */}
             <button className="bg-stone-800 text-stone-50 py-4 rounded-full">
               Sign in
             </button>
           </form>
-
+          {/* Toggle to Signup */}
           <div className="text-center my-4">
             Dont have account ?{" "}
             <button
@@ -126,6 +131,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
             className="flex flex-col gap-10"
             onSubmit={handleSubmit(onSignUpFormSubmit)}
           >
+            {/* Name Input */}
             <AuthInput
               type="text"
               placeholder="enter your name"
@@ -140,6 +146,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
               }}
               error={errors.name}
             />
+            {/* Email Input */}
             <AuthInput
               type="text"
               placeholder="enter your email"
@@ -154,6 +161,7 @@ export default function AuthModel({ setOpenModal, openModal }) {
               }}
               error={errors.email}
             />
+            {/* Password Input */}
             <AuthInput
               type="password"
               placeholder="enter you password"
@@ -168,11 +176,12 @@ export default function AuthModel({ setOpenModal, openModal }) {
               }}
               error={errors.password}
             />
+            {/* Submit Button */}
             <button className="bg-stone-800 text-stone-50 py-4 rounded-full">
               Sign Up
             </button>
           </form>
-
+          {/* Toggle to Login */}
           <div className="text-center my-4">
             Already have an account?{" "}
             <button

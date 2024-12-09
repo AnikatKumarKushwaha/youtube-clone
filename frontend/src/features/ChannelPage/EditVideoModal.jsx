@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -46,6 +47,7 @@ export default function EditVideoModal({ videoData, setShowModal }) {
           className="space-y-3 text-stone-600"
         >
           <div>
+            {/****Title****/}
             <label className="block text-sm font-medium">Title</label>
             <input
               type="text"
@@ -57,6 +59,7 @@ export default function EditVideoModal({ videoData, setShowModal }) {
             )}
           </div>
           <div>
+            {/****Description****/}
             <label className="block text-sm font-medium">Description</label>
             <textarea
               {...register("description", {
@@ -71,6 +74,7 @@ export default function EditVideoModal({ videoData, setShowModal }) {
             )}
           </div>
           <div>
+            {/****Thumbnail URL****/}
             <label className="block text-sm font-medium">Thumbnail URL</label>
             <input
               type="text"
@@ -86,6 +90,7 @@ export default function EditVideoModal({ videoData, setShowModal }) {
             )}
           </div>
           <div>
+            {/****Video URL****/}
             <label className="block text-sm font-medium">Video URL</label>
             <input
               type="text"

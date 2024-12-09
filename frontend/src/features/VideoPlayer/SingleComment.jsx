@@ -12,7 +12,7 @@ import {
   editComment,
   deleteComment,
   fetchComments,
-} from "../../redux/slices/videoSlice"; // Import your actions
+} from "../../redux/slices/videoSlice";
 
 export default function SingleComment({ comment, videoId, userId }) {
   const dispatch = useDispatch();
@@ -22,16 +22,19 @@ export default function SingleComment({ comment, videoId, userId }) {
 
   const userName = comment?.userId?.name || "Unknown";
 
+  // Enables edit mode and closes the popup
   const handleEdit = () => {
     setIsEditing(true);
     setCommentPopUp(false);
   };
 
+  // Cancels edit mode and resets the text to the original comment
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditedText(comment.text);
   };
 
+  // Confirms the edit by dispatching an action to update the comment
   const handleConfirmEdit = async () => {
     setIsEditing(false);
 
@@ -44,12 +47,15 @@ export default function SingleComment({ comment, videoId, userId }) {
         })
       ).unwrap();
 
+      // Fetches updated comments after the edit
+
       dispatch(fetchComments(videoId));
     } catch (error) {
       console.error("Failed to edit comment:", error.message);
     }
   };
 
+  // Deletes the comment by dispatching a delete action
   const handleDeleteComment = () => {
     dispatch(
       deleteComment({
@@ -61,9 +67,12 @@ export default function SingleComment({ comment, videoId, userId }) {
 
   return (
     <div className="py-2 flex items-center gap-4 my-2">
+      {/* Avatar displaying the first letter of the username */}
       <div className="w-10 h-10 rounded-full bg-stone-300 flex justify-center items-center">
         {userName[0]?.toUpperCase() || "?"}
       </div>
+
+      {/* Main comment content */}
       <div className="flex-1">
         <p className="text-stone-600 text-sm font-semibold">@{userName}</p>
         {isEditing ? (
@@ -93,17 +102,20 @@ export default function SingleComment({ comment, videoId, userId }) {
           <p className="text-stone-600 text-sm">{comment.text}</p>
         )}
       </div>
+      {/* Three-dot menu for additional options */}
       <div className="w-4 h-4 ml-auto cursor-pointer relative">
         <button onClick={() => setCommentPopUp(!commentPopUp)}>
           <img src={ThreeDot} alt="three dot" />
+          {/* Toggles the popup */}
         </button>
         {commentPopUp && !isEditing && (
           <div className="absolute bg-white shadow-md border right-3 top-5">
+            {/* Report button */}
             <button className="w-full flex items-center px-4 py-1 gap-2 hover:bg-stone-100">
               <GoReport className="text-orange-400" />
               Report
             </button>
-
+            {/* Edit and Delete options only for the comment owner */}
             {comment.userId._id === userId && (
               <>
                 <button

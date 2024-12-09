@@ -98,6 +98,7 @@ export const fetchComments = createAsyncThunk(
   }
 );
 
+//like a comment
 export const likeVideo = createAsyncThunk(
   "videos/likeVideo",
   async (videoId, thunkAPI) => {

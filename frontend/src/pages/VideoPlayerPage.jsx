@@ -35,6 +35,7 @@ export default function VideoPlayerPage() {
     }
   }, [videoId, dispatch]);
 
+  // Fetch channel details when current video has a channel ID
   useEffect(() => {
     if (currentVideo?.channelId) {
       dispatch(
@@ -52,6 +53,7 @@ export default function VideoPlayerPage() {
     }
   }, [channel, dispatch]);
 
+  // Handle the "like" button functionality
   const handleLike = (e) => {
     e.preventDefault();
     if (currentVideo?._id) {
@@ -88,6 +90,7 @@ export default function VideoPlayerPage() {
               scrollbarWidth: "none",
             }}
           >
+            {/* Channel information */}
             <div className="flex items-center gap-1 sm:gap-2">
               <div>
                 <div className="bg-stone-600 text-stone-50 text-xl w-10 h-10 flex items-center justify-center rounded-full">
@@ -102,6 +105,7 @@ export default function VideoPlayerPage() {
                 Subscribe
               </div>
             </div>
+            {/* Video actions */}
             <div className="flex items-center gap-2">
               <div className="rounded-full  bg-stone-200 flex items-center justify-center">
                 <button
@@ -118,6 +122,7 @@ export default function VideoPlayerPage() {
               <div className="px-2 py-1 flex items-center gap-2 bg-stone-200 rounded-full">
                 <PiShareFat className="text-lg" /> Share
               </div>
+              {/* Download button */}
               <div className="px-2 py-1 flex items-center gap-2 bg-stone-200 rounded-full">
                 Download
               </div>
@@ -126,6 +131,7 @@ export default function VideoPlayerPage() {
           <p className="my-5 text-sm bg-stone-300 p-2 rounded-lg">
             {currentVideo.description}
           </p>
+          {/* Comments section */}
           <div>
             <Comments videoId={currentVideo._id} />
           </div>
@@ -133,6 +139,7 @@ export default function VideoPlayerPage() {
       ) : (
         <div>Loading video details...</div>
       )}
+      {/* Suggested videos section */}
       <div className="lg:w-[30%] ml-4 flex flex-col gap-4">
         {videos?.length > 0 ? (
           videos.map((video) => (

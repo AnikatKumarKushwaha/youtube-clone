@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { jwtDecode } from "jwt-decode"; // Fix the import
+import { jwtDecode } from "jwt-decode";
 import { fetchComments, addComment } from "../../redux/slices/videoSlice";
 
 import SingleComment from "./SingleComment";

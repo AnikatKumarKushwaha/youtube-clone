@@ -1,6 +1,7 @@
 import { Channel } from "../models/channel.model.js";
 import { Video } from "../models/video.model.js";
 
+// Controller to create a new video and associate it with a channel
 export const createVideo = async (req, res) => {
   const { title, description, videoUrl, category, thumbnailUrl, channelId } =
     req.body;
@@ -10,7 +11,7 @@ export const createVideo = async (req, res) => {
     if (!channel) {
       return res.status(404).json({ message: "Channel not found" });
     }
-
+    // Create a new video document
     const newVideo = new Video({
       title,
       description,
@@ -54,7 +55,7 @@ export const getAllVideos = async (req, res) => {
   }
 };
 
-// Fetch a video by ID
+// Fetch a single video by its ID, including channel information
 export const getVideoById = async (req, res) => {
   const { id } = req.params;
 
@@ -71,7 +72,7 @@ export const getVideoById = async (req, res) => {
   }
 };
 
-// Update a video
+// Update a video's details
 export const updateVideo = async (req, res) => {
   const { id } = req.params;
   const { title, description, videoUrl, thumbnailUrl, published } = req.body;
@@ -81,7 +82,7 @@ export const updateVideo = async (req, res) => {
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
     }
-
+    // Update fields only if provided
     video.title = title || video.title;
     video.description = description || video.description;
     video.videoUrl = videoUrl || video.videoUrl;
@@ -97,7 +98,7 @@ export const updateVideo = async (req, res) => {
   }
 };
 
-// Delete a video
+// Delete a video and remove its reference from the channel
 export const deleteVideo = async (req, res) => {
   const { id } = req.params;
 
@@ -147,7 +148,7 @@ export const addComment = async (req, res) => {
   }
 };
 
-//edit comment
+// Edit a specific comment on a video
 export const editComment = async (req, res) => {
   const { videoId, commentId } = req.params;
   const { text } = req.body;
@@ -163,7 +164,7 @@ export const editComment = async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    comment.text = text;
+    comment.text = text; // Update the comment text
     await video.save();
 
     res.status(200).json({ message: "Comment updated successfully", video });
@@ -174,8 +175,7 @@ export const editComment = async (req, res) => {
   }
 };
 
-//delete comments
-
+// Delete a comment from a video
 export const deleteComment = async (req, res) => {
   const { videoId, commentId } = req.params;
 
@@ -207,14 +207,14 @@ export const deleteComment = async (req, res) => {
   }
 };
 
-// Fetch comments of a video
+// Fetch all comments for a specific video
 export const getComments = async (req, res) => {
   const { id } = req.params; // Video ID
 
   try {
     const video = await Video.findById(id).populate(
       "comments.userId",
-      "name email"
+      "name email" // Populate user details for each comment
     );
     if (!video) {
       return res.status(404).json({ message: "Video not found" });
@@ -227,6 +227,7 @@ export const getComments = async (req, res) => {
   }
 };
 
+// Increment the like count for a video
 export const likeVideos = async (req, res) => {
   const { id } = req.params;
   try {
