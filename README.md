@@ -4,6 +4,12 @@
 
 This YouTube Clone application replicates core features of YouTube, including user authentication, video browsing, and channel management. Built using the MERN (MongoDB, Express, React, Node.js) stack, it provides a full-stack development experience.
 
+## Github & Video demo link
+
+- **Github link**: [GitHub Link](https://github.com/AnikatKumarKushwaha/youtube-clone)
+
+- **Video demo link**: [Watch Demo](https://drive.google.com/drive/folders/1w185HOOZDBdcIwZMXU4OTqG134Zutphv?usp=sharing)
+
 ## Key Features
 
 ### Frontend
